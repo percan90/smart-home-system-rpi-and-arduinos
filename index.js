@@ -36,7 +36,23 @@ new five.Boards(ports).on("ready", function() {
         res.send("Hello from index.js!"); 
     });
 
-    
+    var led0 = new five.Led({
+    	pin: 13,
+    	board: this.byId("A")
+    });
+
+    /* Go to 127.0.0.1:3000/led/off or 127.0.0.1:3000/led/oon to toggle LED */
+    app.get('/led/off', function(req, res) {
+        console.log("Led off");
+        led0.stop().off();
+        res.send("Now the LED for pin 13 should be off.");
+    });
+
+    app.get('/led/on', function(req, res) {
+        console.log("Led on");
+        led0.on();
+        res.send("Now the LED for pin 13 should be on.");
+	});
 
 
     // Just for testing purpose
