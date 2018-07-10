@@ -41,7 +41,7 @@ new five.Boards(ports).on("ready", function() {
     	board: this.byId("A")
     });
 
-    /* Go to 127.0.0.1:3000/led/off or 127.0.0.1:3000/led/oon to toggle LED */
+    /* Go to 127.0.0.1:3000/led/off or 127.0.0.1:3000/led/on to toggle LED */
     app.get('/led/off', function(req, res) {
         console.log("Led off");
         led0.stop().off();
