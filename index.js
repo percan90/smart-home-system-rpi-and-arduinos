@@ -9,6 +9,8 @@
 */
 var five = require("johnny-five");
 var SerialPort = require('serialport');
+var path    = require('path');
+
 
 // test your ports using https://github.com/percan90/test-Arduino-boards
 var ports = [
@@ -18,7 +20,6 @@ var ports = [
 ];
 
 new five.Boards(ports).on("ready", function() {
-
 	// Show when boards are ready to use
 	console.log("READY!");
 
@@ -33,28 +34,44 @@ new five.Boards(ports).on("ready", function() {
 
     /* Go to 127.0.0.1 an test your app*/
     app.get('/', function(req, res) { 
-        res.send("Hello from index.js!"); 
+    	// serve static files (css, img, etc...)
+    	app.use(express.static(__dirname + "/web"));
+       	res.sendFile(path.join(__dirname+'/web/index.html'));
     });
 
-    var led0 = new five.Led({
+    /* Define Leds*/
+    var ledA = new five.Led({
     	pin: 13,
     	board: this.byId("A")
     });
 
-    /* Go to 127.0.0.1:3000/led/off or 127.0.0.1:3000/led/on to toggle LED */
-    app.get('/led/off', function(req, res) {
-        console.log("Led off");
-        led0.stop().off();
-        res.send("Now the LED for pin 13 should be off.");
+    var ledB = new five.Led({
+    	pin: 13,
+    	board: this.byId("B")
     });
 
-    app.get('/led/on', function(req, res) {
-        console.log("Led on");
-        led0.on();
-        res.send("Now the LED for pin 13 should be on.");
+    var ledC = new five.Led({
+    	pin: 13,
+    	board: this.byId("C")
+    });
+
+    /* Go to 127.0.0.1:3000/led[letter]/toggle to toggle LED */
+    app.get('/ledA/toggle', function(req, res) {
+        console.log("Led A toggled");
+        ledA.toggle();
+		res.redirect('/');
 	});
 
+	app.get('/ledB/toggle', function(req, res) {
+        console.log("Led B toggled");
+        ledB.toggle();
+		res.redirect('/');
+	});
 
-    // Just for testing purpose
-	console.log("EOF");
+	app.get('/ledC/toggle', function(req, res) {
+        console.log("Led C toggled");
+        ledC.toggle();
+		res.redirect('/');
+	});
+
 });
