@@ -10,6 +10,7 @@
 var five = require("johnny-five");
 var SerialPort = require('serialport');
 var path    = require('path');
+var exphbs  = require('express-handlebars');
 
 
 // test your ports using https://github.com/percan90/test-Arduino-boards
